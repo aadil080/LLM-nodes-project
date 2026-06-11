@@ -1,5 +1,6 @@
 import { PipelineToolbar } from './components/Toolbar/PipelineToolbar';
 import { PipelineCanvas } from './components/Canvas/PipelineCanvas';
+import { DeleteButton } from './components/DeleteButton/DeleteButton';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
     }}>
       <PipelineToolbar />
       <PipelineCanvas />
+      <DeleteButton />
     </div>
   );
 }

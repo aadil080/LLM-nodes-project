@@ -10,7 +10,6 @@ import {
   MarkerType,
 } from 'reactflow';
 import { validateConnection } from '../utils/validation';
-import { getInitNodeData } from '../utils/nodeHelpers';
 
 export const usePipelineStore = create((set, get) => ({
   // State
@@ -19,6 +18,8 @@ export const usePipelineStore = create((set, get) => ({
   selectedNodes: [],
   selectedEdges: [],
   pipelineName: 'Untitled Pipeline',
+  sidebarWidth: 220,
+  draggedNodeId: null,
 
   // Node ID generation - finds the lowest available number
   getNodeID: (type) => {
@@ -121,8 +122,12 @@ export const usePipelineStore = create((set, get) => ({
 
   // Delete selected nodes and connected edges
   deleteSelectedNodes: () => {
-    const { nodes, edges, selectedNodes } = get();
-    const selectedNodeIds = new Set(selectedNodes.map((n) => n.id));
+    const { nodes, edges } = get();
+    
+    // Find nodes that are marked as selected by ReactFlow
+    const selectedNodeIds = new Set(
+      nodes.filter((node) => node.selected).map((node) => node.id)
+    );
 
     set({
       nodes: nodes.filter((node) => !selectedNodeIds.has(node.id)),
@@ -131,7 +136,26 @@ export const usePipelineStore = create((set, get) => ({
           !selectedNodeIds.has(edge.source) &&
           !selectedNodeIds.has(edge.target)
       ),
-      selectedNodes: [],
+    });
+  },
+
+  // Delete a single node by ID
+  deleteNode: (nodeId) => {
+    const { nodes, edges } = get();
+    
+    console.log('deleteNode called with:', nodeId);
+    console.log('Current nodes before delete:', nodes.map(n => n.id));
+    
+    const filteredNodes = nodes.filter((node) => node.id !== nodeId);
+    const filteredEdges = edges.filter(
+      (edge) => edge.source !== nodeId && edge.target !== nodeId
+    );
+    
+    console.log('Nodes after delete:', filteredNodes.map(n => n.id));
+
+    set({
+      nodes: filteredNodes,
+      edges: filteredEdges,
     });
   },
 
@@ -173,6 +197,11 @@ export const usePipelineStore = create((set, get) => ({
     set({ pipelineName: name });
   },
 
+  // Set sidebar width
+  setSidebarWidth: (width) => {
+    set({ sidebarWidth: width });
+  },
+
   // Selection handlers
   setSelectedNodes: (nodes) => {
     set({ selectedNodes: nodes });
@@ -180,6 +209,11 @@ export const usePipelineStore = create((set, get) => ({
 
   setSelectedEdges: (edges) => {
     set({ selectedEdges: edges });
+  },
+
+  // Track dragged node for delete on drop
+  setDraggedNodeId: (nodeId) => {
+    set({ draggedNodeId: nodeId });
   },
 }));
 

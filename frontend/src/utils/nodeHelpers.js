@@ -42,6 +42,39 @@ export const getInitNodeData = (nodeID, type) => {
         model: 'gpt-3.5-turbo',
       };
 
+    case 'api':
+      return {
+        ...baseData,
+        method: 'GET',
+        url: '',
+      };
+
+    case 'conditional':
+      return {
+        ...baseData,
+        operator: '==',
+        compareTo: '',
+      };
+
+    case 'note':
+      return {
+        ...baseData,
+        note: '',
+      };
+
+    case 'transform':
+      return {
+        ...baseData,
+        operation: 'JSON.parse',
+      };
+
+    case 'merge':
+      return {
+        ...baseData,
+        mode: 'concatenate',
+        separator: ' ',
+      };
+
     default:
       return baseData;
   }
