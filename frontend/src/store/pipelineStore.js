@@ -20,6 +20,7 @@ export const usePipelineStore = create((set, get) => ({
   pipelineName: 'Untitled Pipeline',
   sidebarWidth: 220,
   draggedNodeId: null,
+  reactFlowInstance: null,
 
   // Node ID generation - finds the lowest available number
   getNodeID: (type) => {
@@ -214,6 +215,11 @@ export const usePipelineStore = create((set, get) => ({
   // Track dragged node for delete on drop
   setDraggedNodeId: (nodeId) => {
     set({ draggedNodeId: nodeId });
+  },
+
+  // Set ReactFlow instance
+  setReactFlowInstance: (instance) => {
+    set({ reactFlowInstance: instance });
   },
 }));
 

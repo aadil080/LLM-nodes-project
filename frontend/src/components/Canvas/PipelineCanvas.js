@@ -47,6 +47,7 @@ const selector = (state) => ({
   sidebarWidth: state.sidebarWidth,
   setDraggedNodeId: state.setDraggedNodeId,
   deleteNode: state.deleteNode,
+  setReactFlowInstance: state.setReactFlowInstance,
 });
 
 export const PipelineCanvas = () => {
@@ -64,7 +65,16 @@ export const PipelineCanvas = () => {
     sidebarWidth,
     setDraggedNodeId,
     deleteNode,
+    setReactFlowInstance: storeSetReactFlowInstance,
   } = usePipelineStore(selector, shallow);
+
+  /**
+   * Initialize ReactFlow instance
+   */
+  const onInit = useCallback((instance) => {
+    setReactFlowInstance(instance);
+    storeSetReactFlowInstance(instance);
+  }, [storeSetReactFlowInstance]);
 
   /**
    * Handle drop event - Add new node to canvas
@@ -199,7 +209,7 @@ export const PipelineCanvas = () => {
         onDragOver={onDragOver}
         onNodeDragStart={onNodeDragStart}
         onNodeDragStop={onNodeDragStop}
-        onInit={setReactFlowInstance}
+        onInit={onInit}
         nodeTypes={nodeTypes}
         proOptions={proOptions}
         snapGrid={[gridSize, gridSize]}

@@ -58,3 +58,56 @@ code {
 .react-flow__edge.selected marker {
   stroke: #3B82F6 !important;
 }
+
+/* Handle tooltips */
+.react-flow__handle {
+  transition: all 0.2s ease !important;
+}
+
+.react-flow__handle:hover {
+  width: 10px !important;
+  height: 10px !important;
+  background: #3B82F6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Enhanced tooltips for handles */
+.react-flow__handle[title]:hover::before {
+  content: attr(title);
+  position: absolute;
+  background: #1F2937;
+  color: #F9FAFB;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border: 1px solid #374151;
+  z-index: 10000;
+  pointer-events: none;
+}
+
+.react-flow__handle.target[title]:hover::before {
+  left: -8px;
+  transform: translateX(-100%);
+  top: 50%;
+  margin-top: -14px;
+}
+
+.react-flow__handle.source[title]:hover::before {
+  right: -8px;
+  transform: translateX(100%);
+  top: 50%;
+  margin-top: -14px;
+}
+
+/* Node highlight animation */
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 20px rgba(59, 130, 246, 0);
+  }
+}

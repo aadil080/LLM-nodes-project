@@ -32,7 +32,7 @@ export const OutputNode = ({ id, data, selected }) => {
       type={outputType}
       onNameChange={setCurrName}
       onTypeChange={setOutputType}
-      inputs={[{ id: "value" }]}
+      inputs={[{ id: "value", label: "Value" }]}
       selected={selected}
       nodeType="customOutput"
       typeOptions={[

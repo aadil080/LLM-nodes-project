@@ -26,16 +26,19 @@ export const LLMNode = ({ id, data, selected }) => {
       inputs={[
         {
           id: "system",
+          label: "System",
           style: { top: "33%" },
         },
         {
           id: "prompt",
+          label: "Prompt",
           style: { top: "66%" },
         },
       ]}
       outputs={[
         {
           id: "response",
+          label: "Response",
         },
       ]}
       selected={selected}

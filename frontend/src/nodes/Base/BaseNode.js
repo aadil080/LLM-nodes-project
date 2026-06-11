@@ -10,6 +10,7 @@ export const BaseNode = ({
   outputs = [],
   selected = false,
   nodeType,
+  style = {},
 }) => {
   const nodeConfig = getNodeConfig(nodeType);
   const gradient = nodeConfig?.gradient || 'linear-gradient(135deg, #6B7280, #4B5563)';
@@ -18,13 +19,14 @@ export const BaseNode = ({
   const styles = getNodeStyles(gradient, selected);
 
   return (
-    <div style={styles.container}>
+    <div style={{ ...styles.container, ...style }}>
       {inputs.map((handle, index) => (
         <Handle
           key={handle.id}
           type="target"
           position={Position.Left}
           id={`${id}-${handle.id}`}
+          title={handle.label || handle.id}
           style={{
             ...styles.handle,
             ...handle.style,
@@ -48,6 +50,7 @@ export const BaseNode = ({
           type="source"
           position={Position.Right}
           id={`${id}-${handle.id}`}
+          title={handle.label || handle.id}
           style={{
             ...styles.handle,
             ...handle.style,

@@ -15,6 +15,7 @@ export const SubmitButton = () => {
 
   const nodes = usePipelineStore((state) => state.nodes);
   const edges = usePipelineStore((state) => state.edges);
+  const reactFlowInstance = usePipelineStore((state) => state.reactFlowInstance);
 
   const showToast = (message, type = 'info') => {
     setToast({ message, type });
@@ -22,6 +23,26 @@ export const SubmitButton = () => {
 
   const closeToast = () => {
     setToast(null);
+  };
+
+  // Navigate to a specific node
+  const navigateToNode = (nodeId) => {
+    if (!nodeId || !reactFlowInstance) return;
+    
+    const node = nodes.find((n) => n.id === nodeId);
+    if (!node) return;
+
+    // Center the view on the node with animation
+    reactFlowInstance.setCenter(node.position.x + 50, node.position.y + 50, {
+      zoom: 1.5,
+      duration: 800,
+    });
+
+    // Flash the node to highlight it
+    const nodeElement = document.querySelector(`[data-id="${nodeId}"]`);
+    if (nodeElement) {
+      nodeElement.style.animation = 'pulse 0.5s ease-in-out 3';
+    }
   };
 
   const handleSubmit = async () => {
@@ -37,7 +58,24 @@ export const SubmitButton = () => {
           <strong>Validation Failed:</strong>
           <ul style={{ margin: '8px 0', paddingLeft: '20px' }}>
             {validation.errors.map((error, index) => (
-              <li key={index}>{error}</li>
+              <li 
+                key={index}
+                onClick={() => navigateToNode(error.nodeId)}
+                style={{
+                  cursor: error.nodeId ? 'pointer' : 'default',
+                  color: error.nodeId ? '#1E40AF' : 'inherit',
+                  textDecoration: error.nodeId ? 'underline' : 'none',
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                  if (error.nodeId) e.target.style.color = '#1E3A8A';
+                }}
+                onMouseLeave={(e) => {
+                  if (error.nodeId) e.target.style.color = '#1E40AF';
+                }}
+              >
+                {error.message}
+              </li>
             ))}
           </ul>
         </div>
@@ -53,7 +91,24 @@ export const SubmitButton = () => {
           <strong>Warnings:</strong>
           <ul style={{ margin: '8px 0', paddingLeft: '20px' }}>
             {validation.warnings.map((warning, index) => (
-              <li key={index}>{warning}</li>
+              <li 
+                key={index}
+                onClick={() => navigateToNode(warning.nodeId)}
+                style={{
+                  cursor: warning.nodeId ? 'pointer' : 'default',
+                  color: warning.nodeId ? '#92400E' : 'inherit',
+                  textDecoration: warning.nodeId ? 'underline' : 'none',
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                  if (warning.nodeId) e.target.style.color = '#78350F';
+                }}
+                onMouseLeave={(e) => {
+                  if (warning.nodeId) e.target.style.color = '#92400E';
+                }}
+              >
+                {warning.message}
+              </li>
             ))}
           </ul>
         </div>
