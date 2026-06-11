@@ -1,13 +1,16 @@
-import { PipelineToolbar } from './toolbar';
-import { PipelineUI } from './ui';
-import { SubmitButton } from './submit';
+import { PipelineToolbar } from './components/Toolbar/PipelineToolbar';
+import { PipelineCanvas } from './components/Canvas/PipelineCanvas';
 
 function App() {
   return (
-    <div>
+    <div style={{ 
+      display: 'flex',
+      background: '#0F172A', 
+      minHeight: '100vh',
+      overflow: 'hidden'
+    }}>
       <PipelineToolbar />
-      <PipelineUI />
-      <SubmitButton />
+      <PipelineCanvas />
     </div>
   );
 }

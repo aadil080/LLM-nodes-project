@@ -1,4 +1,6 @@
 import { Handle, Position } from "reactflow";
+import { getNodeStyles } from "../../styles/nodes/nodeStyles";
+import { getNodeConfig } from "../../config/nodeTypes";
 
 export const BaseNode = ({
   id,
@@ -6,39 +8,51 @@ export const BaseNode = ({
   children,
   inputs = [],
   outputs = [],
+  selected = false,
+  nodeType,
 }) => {
+  const nodeConfig = getNodeConfig(nodeType);
+  const gradient = nodeConfig?.gradient || 'linear-gradient(135deg, #6B7280, #4B5563)';
+  const icon = nodeConfig?.icon || '📦';
+  
+  const styles = getNodeStyles(gradient, selected);
+
   return (
-    <div
-      style={{
-        width: 200,
-        minHeight: 80,
-        border: "1px solid black",
-        padding: "10px",
-      }}
-    >
-      {inputs.map((handle) => (
+    <div style={styles.container}>
+      {inputs.map((handle, index) => (
         <Handle
           key={handle.id}
           type="target"
           position={Position.Left}
           id={`${id}-${handle.id}`}
-          style={handle.style}
+          style={{
+            ...styles.handle,
+            ...handle.style,
+            top: handle.style?.top || `${((index + 1) * 100) / (inputs.length + 1)}%`,
+          }}
         />
       ))}
 
-      <div>
-        <span>{title}</span>
+      <div style={styles.header}>
+        <div style={styles.title}>
+          <span style={styles.icon}>{icon}</span>
+          <span>{title}</span>
+        </div>
       </div>
 
-      <div>{children}</div>
+      <div style={styles.body}>{children}</div>
 
-      {outputs.map((handle) => (
+      {outputs.map((handle, index) => (
         <Handle
           key={handle.id}
           type="source"
           position={Position.Right}
           id={`${id}-${handle.id}`}
-          style={handle.style}
+          style={{
+            ...styles.handle,
+            ...handle.style,
+            top: handle.style?.top || `${((index + 1) * 100) / (outputs.length + 1)}%`,
+          }}
         />
       ))}
     </div>

@@ -1,70 +1,107 @@
-# Getting Started with Create React App
+# Frontend - LLM Pipeline Builder
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern, production-ready React application for building LLM workflows with drag-and-drop interface.
 
-## Available Scripts
+## 🚀 Quick Start
 
-In the project directory, you can run:
+### Install Dependencies
+```bash
+npm install
+```
+
+### Environment Setup
+Create a `.env` file (copy from `.env.example`):
+```bash
+cp .env.example .env
+```
+
+Configure the backend API URL:
+```env
+REACT_APP_API_URL=http://localhost:8000
+```
+
+### Development Server
+```bash
+npm start
+```
+
+Runs the app at [http://localhost:3000](http://localhost:3000)
+
+### Production Build
+```bash
+npm run build
+```
+
+Creates optimized production build in `build/` folder.
+
+---
+
+## 📦 Dependencies
+
+### Core
+- **React 18.2.0** - UI framework
+- **ReactFlow 11.8.3** - Node-based editor
+- **Zustand** - State management
+
+### Development
+- **react-scripts 5.0.1** - Build tooling
+
+---
+
+## 🏗️ Architecture
+
+### State Management
+The app uses Zustand for centralized state management.
+
+### Component Structure
+```
+src/
+├── api/              # Backend integration
+├── components/       # React components
+├── config/          # Configuration files
+├── nodes/           # Node implementations
+├── store/           # Zustand store
+├── styles/          # Styling
+└── utils/           # Helper functions
+```
+
+---
+
+## 🎨 Available Scripts
 
 ### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Development mode with hot reload
 
 ### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Run test suite (to be implemented)
 
 ### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Production build
 
 ### `npm run eject`
+⚠️ **One-way operation** - Ejects from Create React App
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🔧 Customization
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+See [PROJECT_STRUCTURE.md](../PROJECT_STRUCTURE.md) for detailed instructions on adding new node types.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+## 🌐 API Integration
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+The frontend communicates with the backend via REST API. Configure API URL in `.env` file.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## 📚 Learn More
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- [React Documentation](https://reactjs.org/)
+- [ReactFlow Documentation](https://reactflow.dev/)
+- [Create React App Documentation](https://create-react-app.dev/)
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Built with ❤️ using React and ReactFlow
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

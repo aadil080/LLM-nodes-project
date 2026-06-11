@@ -34,7 +34,7 @@ export const ToolbarCard = ({
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform =
-          "translateY(0)";
+          "translateX(0)";
         e.currentTarget.style.boxShadow =
           cardDefaultShadow;
       }}
