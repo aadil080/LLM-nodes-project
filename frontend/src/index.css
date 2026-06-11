@@ -11,3 +11,19 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* ReactFlow edge selection styling */
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: #3B82F6 !important;
+  stroke-width: 3 !important;
+}
+
+.react-flow__edge:hover .react-flow__edge-path {
+  stroke: #60A5FA !important;
+  stroke-width: 2.5 !important;
+}
+
+.react-flow__edge.selected .react-flow__edge-path,
+.react-flow__edge.selected marker {
+  stroke: #3B82F6 !important;
+}

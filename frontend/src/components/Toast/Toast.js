@@ -1,0 +1,130 @@
+// Toast.js
+// Toast notification component with auto-dismiss
+// --------------------------------------------------
+
+import { useEffect } from 'react';
+
+export const Toast = ({ message, type = 'info', onClose, duration = 5000 }) => {
+  useEffect(() => {
+    if (duration > 0) {
+      const timer = setTimeout(() => {
+        onClose();
+      }, duration);
+
+      return () => clearTimeout(timer);
+    }
+  }, [duration, onClose]);
+
+  const toastStyles = {
+    container: {
+      position: 'fixed',
+      top: '20px',
+      right: '20px',
+      zIndex: 9999,
+      maxWidth: '400px',
+      minWidth: '300px',
+      background: getBackground(type),
+      color: getColor(type),
+      border: `1px solid ${getBorder(type)}`,
+      borderRadius: '12px',
+      padding: '14px 18px',
+      boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+      display: 'flex',
+      alignItems: 'flex-start',
+      gap: '12px',
+      animation: 'slideIn 0.3s ease-out',
+    },
+    icon: {
+      fontSize: '20px',
+      flexShrink: 0,
+    },
+    content: {
+      flex: 1,
+      fontSize: '13px',
+      lineHeight: '1.5',
+    },
+    closeButton: {
+      background: 'none',
+      border: 'none',
+      color: 'inherit',
+      cursor: 'pointer',
+      fontSize: '18px',
+      padding: '0',
+      opacity: 0.7,
+      transition: 'opacity 0.2s',
+      flexShrink: 0,
+    },
+  };
+
+  return (
+    <>
+      <style>
+        {`
+          @keyframes slideIn {
+            from {
+              transform: translateX(400px);
+              opacity: 0;
+            }
+            to {
+              transform: translateX(0);
+              opacity: 1;
+            }
+          }
+        `}
+      </style>
+      <div style={toastStyles.container}>
+        <span style={toastStyles.icon}>{getIcon(type)}</span>
+        <div style={toastStyles.content}>{message}</div>
+        <button
+          style={toastStyles.closeButton}
+          onClick={onClose}
+          onMouseEnter={(e) => (e.target.style.opacity = '1')}
+          onMouseLeave={(e) => (e.target.style.opacity = '0.7')}
+        >
+          ✕
+        </button>
+      </div>
+    </>
+  );
+};
+
+// Helper functions for styling
+const getBackground = (type) => {
+  const backgrounds = {
+    success: '#D1FAE5',
+    error: '#FEE2E2',
+    warning: '#FEF3C7',
+    info: '#DBEAFE',
+  };
+  return backgrounds[type] || backgrounds.info;
+};
+
+const getColor = (type) => {
+  const colors = {
+    success: '#065F46',
+    error: '#991B1B',
+    warning: '#92400E',
+    info: '#1E40AF',
+  };
+  return colors[type] || colors.info;
+};
+
+const getBorder = (type) => {
+  const borders = {
+    success: '#10B981',
+    error: '#EF4444',
+    warning: '#F59E0B',
+    info: '#3B82F6',
+  };
+  return borders[type] || borders.info;
+};
+
+const getIcon = (type) => {
+  const icons = {
+    success: '✓',
+    error: '⚠',
+    warning: '⚠',
+    info: 'ℹ',
+  };
+  return icons[type] || icons.info;
+};
