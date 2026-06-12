@@ -21,6 +21,7 @@ export const usePipelineStore = create((set, get) => ({
   sidebarWidth: 220,
   draggedNodeId: null,
   reactFlowInstance: null,
+  alerts: [],
 
   // Node ID generation - finds the lowest available number
   getNodeID: (type) => {
@@ -220,6 +221,25 @@ export const usePipelineStore = create((set, get) => ({
   // Set ReactFlow instance
   setReactFlowInstance: (instance) => {
     set({ reactFlowInstance: instance });
+  },
+
+  // Alert management
+  addAlert: (message, type = 'info', position = 'right') => {
+    const newAlert = {
+      id: Date.now() + Math.random(),
+      message,
+      type,
+      position,
+    };
+    set({ alerts: [...get().alerts, newAlert] });
+  },
+
+  removeAlert: (id) => {
+    set({ alerts: get().alerts.filter((alert) => alert.id !== id) });
+  },
+
+  clearAlerts: () => {
+    set({ alerts: [] });
   },
 }));
 

@@ -39,44 +39,67 @@ def read_root():
 def parse_pipeline(pipeline: PipelineData):
     """
     Parse and process the pipeline configuration
+    Calculate number of nodes, edges, and check if it forms a DAG
     """
     try:
-        # Extract pipeline information
-        node_count = len(pipeline.nodes)
-        edge_count = len(pipeline.edges)
+        # Calculate number of nodes and edges
+        num_nodes = len(pipeline.nodes)
+        num_edges = len(pipeline.edges)
         
-        # Group nodes by type
-        node_types = {}
-        for node in pipeline.nodes:
-            node_type = node.type
-            if node_type not in node_types:
-                node_types[node_type] = 0
-            node_types[node_type] += 1
-        
-        # Build execution graph (placeholder for actual processing)
-        execution_order = []
-        for node in pipeline.nodes:
-            execution_order.append({
-                'id': node.id,
-                'type': node.type,
-                'data': node.data
-            })
+        # Check if the pipeline forms a Directed Acyclic Graph (DAG)
+        is_dag = check_is_dag(pipeline.nodes, pipeline.edges)
         
         return {
-            'status': 'success',
-            'message': 'Pipeline parsed successfully',
-            'summary': {
-                'total_nodes': node_count,
-                'total_edges': edge_count,
-                'node_types': node_types,
-            },
-            'execution_order': execution_order,
+            'num_nodes': num_nodes,
+            'num_edges': num_edges,
+            'is_dag': is_dag
         }
     except Exception as e:
         return {
             'status': 'error',
             'message': f'Failed to parse pipeline: {str(e)}'
         }
+
+
+def check_is_dag(nodes: List[NodeData], edges: List[EdgeData]) -> bool:
+    """
+    Check if the graph formed by nodes and edges is a Directed Acyclic Graph (DAG)
+    Uses DFS to detect cycles
+    """
+    # Build adjacency list
+    graph = {node.id: [] for node in nodes}
+    for edge in edges:
+        if edge.source in graph:
+            graph[edge.source].append(edge.target)
+    
+    # Track visited nodes and nodes in current recursion stack
+    visited = set()
+    rec_stack = set()
+    
+    def has_cycle(node_id: str) -> bool:
+        """DFS helper function to detect cycles"""
+        visited.add(node_id)
+        rec_stack.add(node_id)
+        
+        # Check all neighbors
+        for neighbor in graph.get(node_id, []):
+            if neighbor not in visited:
+                if has_cycle(neighbor):
+                    return True
+            elif neighbor in rec_stack:
+                # Found a back edge (cycle)
+                return True
+        
+        rec_stack.remove(node_id)
+        return False
+    
+    # Check for cycles starting from each unvisited node
+    for node in nodes:
+        if node.id not in visited:
+            if has_cycle(node.id):
+                return False  # Has cycle, not a DAG
+    
+    return True  # No cycles found, is a DAG
 
 @app.post('/pipelines/validate')
 def validate_pipeline(pipeline: PipelineData):

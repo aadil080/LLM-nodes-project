@@ -4,7 +4,7 @@
 
 import { useEffect } from 'react';
 
-export const Toast = ({ message, type = 'info', onClose, duration = 5000 }) => {
+export const Toast = ({ message, type = 'info', onClose, duration = 5000, position = 'right', index = 0 }) => {
   useEffect(() => {
     if (duration > 0) {
       const timer = setTimeout(() => {
@@ -13,26 +13,39 @@ export const Toast = ({ message, type = 'info', onClose, duration = 5000 }) => {
 
       return () => clearTimeout(timer);
     }
+    // If duration is 0, toast stays until manually closed
   }, [duration, onClose]);
+
+  // Calculate vertical offset based on index
+  const verticalOffset = index * 115; // 115px spacing between toasts
 
   const toastStyles = {
     container: {
       position: 'fixed',
-      top: '20px',
-      right: '20px',
+      top: position === 'center' ? '20px' : `${20 + verticalOffset}px`,
+      ...(position === 'center' ? {
+        left: '50%',
+        transform: 'translateX(-50%)',
+      } : {
+        right: '20px',
+      }),
       zIndex: 9999,
-      maxWidth: '400px',
-      minWidth: '300px',
+      width: 'auto',
+      maxWidth: '420px',
+      minWidth: '320px',
+      boxSizing: 'border-box',
       background: getBackground(type),
       color: getColor(type),
       border: `1px solid ${getBorder(type)}`,
       borderRadius: '12px',
       padding: '14px 18px',
-      boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+      boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
       display: 'flex',
       alignItems: 'flex-start',
       gap: '12px',
-      animation: 'slideIn 0.3s ease-out',
+      animation: position === 'center' ? 'slideDown 0.3s ease-out' : 'slideIn 0.3s ease-out',
+      transition: 'top 0.3s ease-out',
+      pointerEvents: 'auto',
     },
     icon: {
       fontSize: '20px',
@@ -40,6 +53,8 @@ export const Toast = ({ message, type = 'info', onClose, duration = 5000 }) => {
     },
     content: {
       flex: 1,
+      wordWrap: 'break-word',
+      overflow: 'hidden',
       fontSize: '13px',
       lineHeight: '1.5',
     },
@@ -60,6 +75,16 @@ export const Toast = ({ message, type = 'info', onClose, duration = 5000 }) => {
     <>
       <style>
         {`
+          @keyframes slideDown {
+            from {
+              transform: translateX(-50%) translateY(-100px);
+              opacity: 0;
+            }
+            to {
+              transform: translateX(-50%) translateY(0);
+              opacity: 1;
+            }
+          }
           @keyframes slideIn {
             from {
               transform: translateX(400px);

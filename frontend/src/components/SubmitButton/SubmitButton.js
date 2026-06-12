@@ -7,22 +7,17 @@ import { usePipelineStore } from '../../store/pipelineStore';
 import { validatePipeline } from '../../utils/validation';
 import { submitPipeline } from '../../api/pipelineApi';
 import { serializePipeline } from '../../utils/nodeHelpers';
-import { Toast } from '../Toast/Toast';
 
 export const SubmitButton = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [toast, setToast] = useState(null);
 
   const nodes = usePipelineStore((state) => state.nodes);
   const edges = usePipelineStore((state) => state.edges);
   const reactFlowInstance = usePipelineStore((state) => state.reactFlowInstance);
+  const addAlert = usePipelineStore((state) => state.addAlert);
 
-  const showToast = (message, type = 'info') => {
-    setToast({ message, type });
-  };
-
-  const closeToast = () => {
-    setToast(null);
+  const showToast = (message, type = 'info', position = 'right') => {
+    addAlert(message, type, position);
   };
 
   // Navigate to a specific node
@@ -46,17 +41,16 @@ export const SubmitButton = () => {
   };
 
   const handleSubmit = async () => {
-    // Clear previous toast
-    closeToast();
-
+    // No need to clear previous toasts - they accumulate
+    
     // Validate pipeline
     const validation = validatePipeline(nodes, edges);
 
     if (!validation.isValid) {
       const errorMessage = (
-        <div>
+        <div style={{ width: '100%', boxSizing: 'border-box' }}>
           <strong>Validation Failed:</strong>
-          <ul style={{ margin: '8px 0', paddingLeft: '20px' }}>
+          <ul style={{ margin: '8px 0', paddingLeft: '20px', wordWrap: 'break-word' }}>
             {validation.errors.map((error, index) => (
               <li 
                 key={index}
@@ -87,9 +81,9 @@ export const SubmitButton = () => {
     // Show warnings if any
     if (validation.warnings.length > 0) {
       const warningMessage = (
-        <div>
+        <div style={{ width: '100%', boxSizing: 'border-box' }}>
           <strong>Warnings:</strong>
-          <ul style={{ margin: '8px 0', paddingLeft: '20px' }}>
+          <ul style={{ margin: '8px 0', paddingLeft: '20px', wordWrap: 'break-word' }}>
             {validation.warnings.map((warning, index) => (
               <li 
                 key={index}
@@ -126,7 +120,93 @@ export const SubmitButton = () => {
       const result = await submitPipeline(pipelineData);
 
       if (result.success) {
+        // Extract the DAG information from the response
+        const { num_nodes, num_edges, is_dag } = result.data;
+        
+        // Create modern styled toast message with 3 key metrics
+        const dagMessage = (
+          <div style={{ fontSize: '13px', width: '100%', boxSizing: 'border-box' }}>
+            <div style={{ 
+              display: 'flex', 
+              flexDirection: 'column', 
+              gap: '8px',
+              width: '100%'
+            }}>
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '8px',
+                padding: '8px 12px',
+                background: 'rgba(59, 130, 246, 0.1)',
+                borderRadius: '6px',
+                boxSizing: 'border-box'
+              }}>
+                <span style={{ fontSize: '18px' }}>📊</span>
+                <span style={{ fontWeight: 500 }}>Nodes:</span>
+                <span style={{ 
+                  marginLeft: 'auto', 
+                  fontWeight: 600,
+                  color: '#1E40AF',
+                  fontSize: '15px'
+                }}>
+                  {num_nodes}
+                </span>
+              </div>
+              
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '8px',
+                padding: '8px 12px',
+                background: 'rgba(59, 130, 246, 0.1)',
+                borderRadius: '6px',
+                boxSizing: 'border-box'
+              }}>
+                <span style={{ fontSize: '18px' }}>🔗</span>
+                <span style={{ fontWeight: 500 }}>Edges:</span>
+                <span style={{ 
+                  marginLeft: 'auto', 
+                  fontWeight: 600,
+                  color: '#1E40AF',
+                  fontSize: '15px'
+                }}>
+                  {num_edges}
+                </span>
+              </div>
+              
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '8px',
+                padding: '8px 12px',
+                background: is_dag ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)',
+                borderRadius: '6px',
+                boxSizing: 'border-box',
+                border: `1.5px solid ${is_dag ? '#10B981' : '#EF4444'}`
+              }}>
+                <span style={{ fontSize: '18px' }}>
+                  {is_dag ? '✅' : '⚠️'}
+                </span>
+                <span style={{ fontWeight: 500 }}>DAG Cycle:</span>
+                <span style={{ 
+                  marginLeft: 'auto', 
+                  fontWeight: 600,
+                  color: is_dag ? '#065F46' : '#991B1B',
+                  fontSize: '15px'
+                }}>
+                  {is_dag ? 'Not Present' : 'Present'}
+                </span>
+              </div>
+            </div>
+          </div>
+        );
+        
+        // Show toast with no timeout (stays until manually dismissed)
+        showToast(dagMessage, is_dag ? 'success' : 'warning', 'center');
+        
+        // Also show success message in top right corner
         showToast('Pipeline submitted successfully!', 'success');
+        
         console.log('Pipeline result:', result.data);
       } else {
         showToast(`Submission failed: ${result.error}`, 'error');
@@ -177,15 +257,6 @@ export const SubmitButton = () => {
       >
         {isSubmitting ? 'Submitting...' : 'Submit Pipeline'}
       </button>
-
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={closeToast}
-          duration={5000}
-        />
-      )}
     </>
   );
 };

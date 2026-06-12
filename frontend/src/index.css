@@ -49,6 +49,62 @@ code {
   stroke-width: 3 !important;
 }
 
+/* Control button styling */
+.react-flow__controls-button {
+  background: #4B5563 !important;
+  border: 1px solid #6B7280 !important;
+  border-radius: 6px !important;
+  color: #F9FAFB !important;
+  width: 36px !important;
+  height: 36px !important;
+  transition: all 0.2s ease !important;
+  margin: 0 !important;
+  cursor: pointer !important;
+}
+
+.react-flow__controls-button:hover {
+  background: #3B82F6 !important;
+  border-color: #60A5FA !important;
+  transform: scale(1.08);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
+}
+
+.react-flow__controls-button:active {
+  background: #2563EB !important;
+  transform: scale(0.96);
+}
+
+.react-flow__controls-button svg {
+  width: 18px !important;
+  height: 18px !important;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+.react-flow__controls {
+  box-shadow: none !important;
+}
+
+/* Tooltips for control buttons using data-tooltip attribute */
+.react-flow__controls-button[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 8px;
+  background: #1F2937;
+  color: #F9FAFB;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border: 1px solid #374151;
+  z-index: 10001;
+  pointer-events: none;
+}
+
 .react-flow__edge:hover .react-flow__edge-path {
   stroke: #60A5FA !important;
   stroke-width: 2.5 !important;

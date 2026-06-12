@@ -2,7 +2,7 @@
 // Main canvas component for the pipeline editor
 // --------------------------------------------------
 
-import { useRef, useCallback, useState } from 'react';
+import { useRef, useCallback, useState, useEffect } from 'react';
 import ReactFlow, { Controls, Background, MiniMap } from 'reactflow';
 import { usePipelineStore } from '../../store/pipelineStore';
 import { shallow } from 'zustand/shallow';
@@ -188,6 +188,40 @@ export const PipelineCanvas = () => {
     return colorMap[node.type] || '#6B7280';
   };
 
+  /**
+   * Add tooltips to control buttons after render
+   */
+  useEffect(() => {
+    const addTooltips = () => {
+      const controls = document.querySelectorAll('.react-flow__controls-button');
+      controls.forEach((button, index) => {
+        // Remove default title attribute first
+        button.removeAttribute('title');
+        
+        const tooltips = [
+          'Zoom In',
+          'Zoom Out',
+          'Fit View',
+          'Lock/Unlock'
+        ];
+        if (index < tooltips.length) {
+          button.setAttribute('data-tooltip', tooltips[index]);
+        }
+      });
+      
+      // Remove minimap default tooltip
+      const minimapNode = document.querySelector('.react-flow__minimap');
+      if (minimapNode) {
+        minimapNode.removeAttribute('title');
+        minimapNode.removeAttribute('aria-label');
+      }
+    };
+    
+    // Add tooltips after a short delay to ensure buttons are rendered
+    const timer = setTimeout(addTooltips, 100);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div
       ref={reactFlowWrapper}
@@ -234,21 +268,30 @@ export const PipelineCanvas = () => {
           style={{ background: '#0F172A' }}
         />
         <Controls
+          position="bottom-left"
           style={{
-            button: {
-              background: '#1F2937',
-              border: '1px solid #374151',
-              color: '#F9FAFB',
-            },
+            display: 'flex',
+            gap: '2px',
+            background: '#374151',
+            border: '1px solid #4B5563',
+            borderRadius: '8px',
+            padding: '4px',
+            boxShadow: '0 4px 16px rgba(0, 0, 0, 0.5)',
           }}
+          showZoom={true}
+          showFitView={true}
+          showInteractive={true}
         />
         <MiniMap
           nodeColor={minimapNodeColor}
           style={{
-            background: '#1F2937',
-            border: '1px solid #374151',
+            background: '#374151',
+            border: '1px solid #4B5563',
+            borderRadius: '8px',
+            overflow: 'hidden',
+            boxShadow: '0 4px 16px rgba(0, 0, 0, 0.5)',
           }}
-          maskColor="rgba(15, 23, 42, 0.6)"
+          maskColor="rgba(15, 23, 42, 0.4)"
         />
       </ReactFlow>
     </div>
