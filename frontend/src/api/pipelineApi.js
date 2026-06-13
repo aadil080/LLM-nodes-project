@@ -35,36 +35,6 @@ export const submitPipeline = async (pipelineData) => {
 };
 
 /**
- * Validates the pipeline configuration with the backend
- * @param {Object} pipelineData - The pipeline data to validate
- * @returns {Promise<Object>} Validation result
- */
-export const validatePipeline = async (pipelineData) => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/pipelines/validate`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(pipelineData),
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return { success: true, data };
-  } catch (error) {
-    console.error('Error validating pipeline:', error);
-    return {
-      success: false,
-      error: error.message || 'Failed to validate pipeline',
-    };
-  }
-};
-
-/**
  * Health check for the backend API
  * @returns {Promise<boolean>} True if API is available
  */

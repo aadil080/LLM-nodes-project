@@ -32,9 +32,6 @@ src/
 ├── config/                       # Configuration files
 │   └── nodeTypes.js            # Node type definitions
 │
-├── constants/                    # Constants
-│   └── colors.js               # Color palette
-│
 ├── nodes/                        # Node implementations
 │   ├── Base/                    # Base node components
 │   │   ├── BaseNode.js         # Generic node base

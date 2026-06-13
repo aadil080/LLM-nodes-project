@@ -9,10 +9,15 @@ A production-ready visual workflow builder for creating and managing LLM pipelin
 ## 📸 Preview
 
 Visual node-based editor for creating LLM workflows with support for:
-- 📥 **Input Nodes** - Data entry points
-- 🤖 **LLM Nodes** - AI processing with configurable models
-- 📤 **Output Nodes** - Result extraction
-- 📝 **Text Nodes** - Templates and static text
+- 📥 **Input Nodes** - Data entry points for your pipeline
+- 🤖 **LLM Nodes** - Integrate with large language models
+- 📤 **Output Nodes** - Display or capture final results
+- 📝 **Text Nodes** - Manipulate and format text
+- 🔄 **Transform Nodes** - Apply data transformations
+- 🔀 **Merge Nodes** - Combine multiple data streams
+- ❓ **Conditional Nodes** - Route data based on conditions
+- 🌐 **API Nodes** - Make external API calls
+- 🗒️ **Note Nodes** - Add comments and annotations
 
 ---
 

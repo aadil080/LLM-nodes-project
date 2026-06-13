@@ -100,9 +100,6 @@ def check_is_dag(nodes: List[NodeData], edges: List[EdgeData]) -> bool:
                 return False  # Has cycle, not a DAG
     
     return True  # No cycles found, is a DAG
-
-@app.post('/pipelines/validate')
-def validate_pipeline(pipeline: PipelineData):
     """
     Validate the pipeline configuration
     """

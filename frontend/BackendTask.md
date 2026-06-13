@@ -1,5 +1,0 @@
-In the /backend folder, you will find a very simple Python/FastAPI backend. Your task is to build an integration between the frontend you completed and this simple backend. 
-On the frontend, you should update /frontend/src/submit.js to send the nodes and edges of the pipeline to the /pipelines/parse endpoint in the backend when the button is clicked. 
-On the backend, you should update the /pipelines/parse endpoint in /backend/main.py to calculate the number of nodes and edges in the pipeline. You should also check whether the nodes and edges in the pipeline form a directed acyclic graph (DAG). The response from this endpoint should be in the following format: {num_nodes: int, num_edges: int, is_dag: bool}. 
-Once you have updated the button and the endpoint, you should create an alert that triggers when the frontend receives a response from the backend. This alert should display the values of num_nodes, num_edges, and is_dag in a user-friendly manner. 
-The final result should allow a user to create a pipeline, click submit, and then receive an alert with the number of nodes/edges as well as whether the pipeline is a DAG.
