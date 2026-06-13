@@ -49,7 +49,7 @@ const getNodeDisplayName = (node) => {
  * @param {Array} edges - All edges in the pipeline
  * @returns {Object} Validation result
  */
-export const validateNodeInputs = (node, edges) => {
+const validateNodeInputs = (node, edges) => {
   const nodeInputs = getNodeInputRequirements(node.type);
   const connectedInputs = edges
     .filter((edge) => edge.target === node.id)

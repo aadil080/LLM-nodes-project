@@ -16,7 +16,7 @@ export const SubmitButton = () => {
   const reactFlowInstance = usePipelineStore((state) => state.reactFlowInstance);
   const addAlert = usePipelineStore((state) => state.addAlert);
 
-  const showToast = (message, type = 'info', position = 'right') => {
+  const showToast = (message, type, position = 'right') => {
     addAlert(message, type, position);
   };
 
@@ -132,6 +132,13 @@ export const SubmitButton = () => {
               gap: '8px',
               width: '100%'
             }}>
+              <div>
+                <p style={{
+                  fontSize: '16px'
+                }} >
+                  Pipeline submitted successfully!
+                </p>
+              </div>
               <div style={{ 
                 display: 'flex', 
                 alignItems: 'center', 
@@ -203,9 +210,6 @@ export const SubmitButton = () => {
         
         // Show toast with no timeout (stays until manually dismissed)
         showToast(dagMessage, is_dag ? 'success' : 'warning', 'center');
-        
-        // Also show success message in top right corner
-        showToast('Pipeline submitted successfully!', 'success');
         
         console.log('Pipeline result:', result.data);
       } else {

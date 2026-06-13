@@ -17,12 +17,11 @@ export const Toast = ({ message, type = 'info', onClose, duration = 5000, positi
   }, [duration, onClose]);
 
   // Calculate vertical offset based on index
-  const verticalOffset = index * 115; // 115px spacing between toasts
 
   const toastStyles = {
     container: {
       position: 'fixed',
-      top: position === 'center' ? '20px' : `${20 + verticalOffset}px`,
+      top: '20px',
       ...(position === 'center' ? {
         left: '50%',
         transform: 'translateX(-50%)',
@@ -146,10 +145,9 @@ const getBorder = (type) => {
 
 const getIcon = (type) => {
   const icons = {
-    success: '✓',
     error: '⚠',
     warning: '⚠',
     info: 'ℹ',
   };
-  return icons[type] || icons.info;
+  return icons[type];
 };

@@ -35,17 +35,23 @@ export const AlertContainer = ({ alerts, onClose }) => {
       ))}
       
       {/* Right positioned alerts */}
-      {rightAlerts.map((alert, index) => (
-        <Toast
-          key={alert.id}
-          message={alert.message}
-          type={alert.type}
-          onClose={() => onClose(alert.id)}
-          duration={0}
-          position="right"
-          index={index}
-        />
-      ))}
+      <div
+        style={{
+          gap: '12px',
+        }}
+      >
+        {rightAlerts.map((alert, index) => (
+          <Toast
+            key={alert.id}
+            message={alert.message}
+            type={alert.type}
+            onClose={() => onClose(alert.id)}
+            duration={0}
+            position="right"
+            index={index}
+          />
+        ))}
+      </div>
     </div>
   );
 };

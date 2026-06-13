@@ -224,7 +224,7 @@ export const usePipelineStore = create((set, get) => ({
   },
 
   // Alert management
-  addAlert: (message, type = 'info', position = 'right') => {
+  addAlert: (message, type, position = 'right') => {
     const newAlert = {
       id: Date.now() + Math.random(),
       message,

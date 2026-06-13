@@ -103,26 +103,7 @@ export const serializePipeline = (nodes, edges) => {
   };
 };
 
-/**
- * Deserializes pipeline data from backend or storage
- * @param {Object} pipelineData - Serialized pipeline data
- * @returns {Object} Pipeline with nodes and edges
- */
-export const deserializePipeline = (pipelineData) => {
-  if (!pipelineData || !pipelineData.nodes || !pipelineData.edges) {
-    return { nodes: [], edges: [] };
-  }
 
-  return {
-    nodes: pipelineData.nodes,
-    edges: pipelineData.edges.map((edge) => ({
-      ...edge,
-      type: 'smoothstep',
-      animated: true,
-      markerEnd: { type: 'arrow', height: '20px', width: '20px' },
-    })),
-  };
-};
 
 /**
  * Saves pipeline to localStorage
