@@ -100,31 +100,3 @@ def check_is_dag(nodes: List[NodeData], edges: List[EdgeData]) -> bool:
                 return False  # Has cycle, not a DAG
     
     return True  # No cycles found, is a DAG
-    """
-    Validate the pipeline configuration
-    """
-    errors = []
-    warnings = []
-    
-    # Check if pipeline has nodes
-    if len(pipeline.nodes) == 0:
-        errors.append('Pipeline is empty')
-    
-    # Check for input nodes
-    input_nodes = [n for n in pipeline.nodes if n.type == 'customInput']
-    if len(input_nodes) == 0:
-        warnings.append('No input nodes found')
-    
-    # Check for output nodes
-    output_nodes = [n for n in pipeline.nodes if n.type == 'customOutput']
-    if len(output_nodes) == 0:
-        warnings.append('No output nodes found')
-    
-    is_valid = len(errors) == 0
-    
-    return {
-        'status': 'success',
-        'is_valid': is_valid,
-        'errors': errors,
-        'warnings': warnings,
-    }
